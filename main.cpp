@@ -7,8 +7,11 @@ void init();
 void desenha();
 void teclas(int key, int x, int y);
 void mouse(int x, int y);
+void reshape(int w, int h);
 
 Camera camera(5.f, 90.f, 90.f);
+
+float wWidth, wHeight;
 
 int main(int argc, char **argv)
 {
@@ -21,6 +24,7 @@ int main(int argc, char **argv)
 
     init();
 
+    glutReshapeFunc(reshape);
     glutDisplayFunc(desenha);
     glutSpecialFunc(teclas);
     glutMotionFunc(mouse);
@@ -41,8 +45,11 @@ void init()
     glEnable(GL_LINE_SMOOTH);
 }
 
-void desenha()
-{
+void desenha() {
+    wWidth = glutGet(GLUT_WINDOW_WIDTH);
+    wHeight = glutGet(GLUT_WINDOW_HEIGHT);
+
+    glViewport(0, 0, wWidth, wHeight);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     glMatrixMode(GL_PROJECTION);
@@ -50,11 +57,8 @@ void desenha()
 
     float altura, largura;
 
-    float windowWidth = glutGet(GLUT_WINDOW_WIDTH);
-    float windowHeight = glutGet(GLUT_WINDOW_HEIGHT);
-
-    largura = 2;
-    altura = largura*windowWidth/windowHeight;
+    largura = 4;
+    altura = largura*wWidth/wHeight;
 
     glFrustum(-largura / 2, largura / 2, -altura / 2, altura / 2, 1, 100);
 
@@ -63,62 +67,64 @@ void desenha()
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    //face vermelha
-    glBegin(GL_POLYGON);
-    glColor3f(1.0, 0.0, 0.0);
-    glVertex3f(0.5, -0.5, -0.5);
-    glVertex3f(-0.5, -0.5, -0.5);
-    glVertex3f(-0.5, 0.5, -0.5);
-    glVertex3f(0.5, 0.5, -0.5);
-    glEnd();
+    {//CUBO
+        //face vermelha
+        glBegin(GL_POLYGON);
+        glColor3f(1.0, 0.0, 0.0);
+        glVertex3f(0.5, -0.5, -0.5);
+        glVertex3f(-0.5, -0.5, -0.5);
+        glVertex3f(-0.5, 0.5, -0.5);
+        glVertex3f(0.5, 0.5, -0.5);
+        glEnd();
 
-    //face branca
-    glBegin(GL_POLYGON);
-    glColor3f(1.0, 1.0, 1.0);
-    glVertex3f(0.5, -0.5, 0.5);
-    glVertex3f(0.5, 0.5, 0.5);
-    glVertex3f(-0.5, 0.5, 0.5);
-    glVertex3f(-0.5, -0.5, 0.5);
-    glEnd();
+        //face branca
+        glBegin(GL_POLYGON);
+        glColor3f(1.0, 1.0, 1.0);
+        glVertex3f(0.5, -0.5, 0.5);
+        glVertex3f(0.5, 0.5, 0.5);
+        glVertex3f(-0.5, 0.5, 0.5);
+        glVertex3f(-0.5, -0.5, 0.5);
+        glEnd();
 
-    //face magenta
-    glBegin(GL_POLYGON);
-    glColor3f(1.0, 0.0, 1.0);
-    glVertex3f(0.5, -0.5, -0.5);
-    glVertex3f(0.5, 0.5, -0.5);
-    glVertex3f(0.5, 0.5, 0.5);
-    glVertex3f(0.5, -0.5, 0.5);
-    glEnd();
+        //face magenta
+        glBegin(GL_POLYGON);
+        glColor3f(1.0, 0.0, 1.0);
+        glVertex3f(0.5, -0.5, -0.5);
+        glVertex3f(0.5, 0.5, -0.5);
+        glVertex3f(0.5, 0.5, 0.5);
+        glVertex3f(0.5, -0.5, 0.5);
+        glEnd();
 
-    //face verde
-    glBegin(GL_POLYGON);
-    glColor3f(0.0, 1.0, 0.0);
-    glVertex3f(-0.5, -0.5, 0.5);
-    glVertex3f(-0.5, 0.5, 0.5);
-    glVertex3f(-0.5, 0.5, -0.5);
-    glVertex3f(-0.5, -0.5, -0.5);
-    glEnd();
+        //face verde
+        glBegin(GL_POLYGON);
+        glColor3f(0.0, 1.0, 0.0);
+        glVertex3f(-0.5, -0.5, 0.5);
+        glVertex3f(-0.5, 0.5, 0.5);
+        glVertex3f(-0.5, 0.5, -0.5);
+        glVertex3f(-0.5, -0.5, -0.5);
+        glEnd();
 
-    //face azul
-    glBegin(GL_POLYGON);
-    glColor3f(0.0, 0.0, 1.0);
-    glVertex3f(0.5, 0.5, 0.5);
-    glVertex3f(0.5, 0.5, -0.5);
-    glVertex3f(-0.5, 0.5, -0.5);
-    glVertex3f(-0.5, 0.5, 0.5);
-    glEnd();
+        //face azul
+        glBegin(GL_POLYGON);
+        glColor3f(0.0, 0.0, 1.0);
+        glVertex3f(0.5, 0.5, 0.5);
+        glVertex3f(0.5, 0.5, -0.5);
+        glVertex3f(-0.5, 0.5, -0.5);
+        glVertex3f(-0.5, 0.5, 0.5);
+        glEnd();
 
-    //face ciano
-    glBegin(GL_POLYGON);
-    glColor3f(0.0, 1.0, 1.0);
-    glVertex3f(0.5, -0.5, -0.5);
-    glVertex3f(0.5, -0.5, 0.5);
-    glVertex3f(-0.5, -0.5, 0.5);
-    glVertex3f(-0.5, -0.5, -0.5);
-    glEnd();
+        //face ciano
+        glBegin(GL_POLYGON);
+        glColor3f(0.0, 1.0, 1.0);
+        glVertex3f(0.5, -0.5, -0.5);
+        glVertex3f(0.5, -0.5, 0.5);
+        glVertex3f(-0.5, -0.5, 0.5);
+        glVertex3f(-0.5, -0.5, -0.5);
+        glEnd();
+    }
 
     glFlush();
-    // glutSwapBuffers();
+    glutSwapBuffers();
 }
 
 void teclas( int key, int x, int y ) {
@@ -154,4 +160,9 @@ void mouse(int xpos, int ypos){
     camera.UpdatePhi(dy);
     glutPostRedisplay();
     
+}
+
+void reshape(int w, int h) {
+    wHeight = w;
+    wHeight = h;   
 }

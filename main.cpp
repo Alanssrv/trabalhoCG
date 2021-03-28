@@ -5,12 +5,20 @@
 
 void init();
 void desenha();
-void teclas(int key, int x, int y);
+void teclas_especiais(int key, int x, int y);
+void teclado(unsigned char key, int x, int y);
 void mouse(int x, int y);
 void reshape(int w, int h);
 
-Camera camera(5.f, 90.f, 90.f);
+void chooseFigure();
+void cubo();
+void piramide();
+void cilindro();
 
+Camera camera(5.f, 0.f, 90.f);
+
+int figure;
+float anguloInicial = M_PI/6.0;
 float wWidth, wHeight;
 
 int main(int argc, char **argv)
@@ -26,7 +34,8 @@ int main(int argc, char **argv)
 
     glutReshapeFunc(reshape);
     glutDisplayFunc(desenha);
-    glutSpecialFunc(teclas);
+    glutKeyboardFunc(teclado);
+    glutSpecialFunc(teclas_especiais);
     glutMotionFunc(mouse);
     glutMainLoop();
 
@@ -36,6 +45,8 @@ int main(int argc, char **argv)
 void init()
 {
     glClearColor(0, 0, 0, 0);
+
+    figure = 1;
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
@@ -67,67 +78,27 @@ void desenha() {
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
-    {//CUBO
-        //face vermelha
-        glBegin(GL_POLYGON);
-        glColor3f(1.0, 0.0, 0.0);
-        glVertex3f(0.5, -0.5, -0.5);
-        glVertex3f(-0.5, -0.5, -0.5);
-        glVertex3f(-0.5, 0.5, -0.5);
-        glVertex3f(0.5, 0.5, -0.5);
-        glEnd();
-
-        //face branca
-        glBegin(GL_POLYGON);
-        glColor3f(1.0, 1.0, 1.0);
-        glVertex3f(0.5, -0.5, 0.5);
-        glVertex3f(0.5, 0.5, 0.5);
-        glVertex3f(-0.5, 0.5, 0.5);
-        glVertex3f(-0.5, -0.5, 0.5);
-        glEnd();
-
-        //face magenta
-        glBegin(GL_POLYGON);
-        glColor3f(1.0, 0.0, 1.0);
-        glVertex3f(0.5, -0.5, -0.5);
-        glVertex3f(0.5, 0.5, -0.5);
-        glVertex3f(0.5, 0.5, 0.5);
-        glVertex3f(0.5, -0.5, 0.5);
-        glEnd();
-
-        //face verde
-        glBegin(GL_POLYGON);
-        glColor3f(0.0, 1.0, 0.0);
-        glVertex3f(-0.5, -0.5, 0.5);
-        glVertex3f(-0.5, 0.5, 0.5);
-        glVertex3f(-0.5, 0.5, -0.5);
-        glVertex3f(-0.5, -0.5, -0.5);
-        glEnd();
-
-        //face azul
-        glBegin(GL_POLYGON);
-        glColor3f(0.0, 0.0, 1.0);
-        glVertex3f(0.5, 0.5, 0.5);
-        glVertex3f(0.5, 0.5, -0.5);
-        glVertex3f(-0.5, 0.5, -0.5);
-        glVertex3f(-0.5, 0.5, 0.5);
-        glEnd();
-
-        //face ciano
-        glBegin(GL_POLYGON);
-        glColor3f(0.0, 1.0, 1.0);
-        glVertex3f(0.5, -0.5, -0.5);
-        glVertex3f(0.5, -0.5, 0.5);
-        glVertex3f(-0.5, -0.5, 0.5);
-        glVertex3f(-0.5, -0.5, -0.5);
-        glEnd();
-    }
+    chooseFigure();
 
     glFlush();
     glutSwapBuffers();
 }
 
-void teclas( int key, int x, int y ) {
+void chooseFigure(){
+    switch (figure){
+        case 1:
+            cubo();
+            break;
+        case 2:
+            piramide();
+            break;
+        case 3:
+            cilindro();
+            break;
+    }
+}
+
+void teclas_especiais( int key, int x, int y ) {
 
     if (key == GLUT_KEY_RIGHT){
 
@@ -141,6 +112,27 @@ void teclas( int key, int x, int y ) {
   
     glutPostRedisplay();
 
+}
+
+void teclado(unsigned char key, int x, int y){
+    switch (key) {
+        case '1': 
+            figure = 1;
+            break;
+        case '2':
+            figure = 2;
+            break;
+        case '3':
+            figure = 3;
+            break;
+        case 'w':case 'W':
+            camera.Forward();
+            break;
+        case 's':case 'S':
+            camera.Back();
+            break;
+    }
+    glutPostRedisplay();
 }
 
 void mouse(int xpos, int ypos){
@@ -165,4 +157,139 @@ void mouse(int xpos, int ypos){
 void reshape(int w, int h) {
     wHeight = w;
     wHeight = h;   
+}
+
+void cubo() {
+    //face vermelha
+    glBegin(GL_POLYGON);
+    glColor3f(1.0, 0.0, 0.0);
+    glVertex3f(1.0, -1.0, -1.0);
+    glVertex3f(-1.0, -1.0, -1.0);
+    glVertex3f(-1.0, 1.0, -1.0);
+    glVertex3f(1.0, 1.0, -1.0);
+    glEnd();
+
+    //face branca
+    glBegin(GL_POLYGON);
+    glColor3f(1.0, 1.0, 1.0);
+    glVertex3f(1.0, -1.0, 1.0);
+    glVertex3f(1.0, 1.0, 1.0);
+    glVertex3f(-1.0, 1.0, 1.0);
+    glVertex3f(-1.0, -1.0, 1.0);
+    glEnd();
+
+    //face magenta
+    glBegin(GL_POLYGON);
+    glColor3f(1.0, 0.0, 1.0);
+    glVertex3f(1.0, -1.0, -1.0);
+    glVertex3f(1.0, 1.0, -1.0);
+    glVertex3f(1.0, 1.0, 1.0);
+    glVertex3f(1.0, -1.0, 1.0);
+    glEnd();
+
+    //face verde
+    glBegin(GL_POLYGON);
+    glColor3f(0.0, 1.0, 0.0);
+    glVertex3f(-1.0, -1.0, 1.0);
+    glVertex3f(-1.0, 1.0, 1.0);
+    glVertex3f(-1.0, 1.0, -1.0);
+    glVertex3f(-1.0, -1.0, -1.0);
+    glEnd();
+
+    //face azul
+    glBegin(GL_POLYGON);
+    glColor3f(0.0, 0.0, 1.0);
+    glVertex3f(1.0, 1.0, 1.0);
+    glVertex3f(1.0, 1.0, -1.0);
+    glVertex3f(-1.0, 1.0, -1.0);
+    glVertex3f(-1.0, 1.0, 1.0);
+    glEnd();
+
+    //face ciano
+    glBegin(GL_POLYGON);
+    glColor3f(0.0, 1.0, 1.0);
+    glVertex3f(1.0, -1.0, -1.0);
+    glVertex3f(1.0, -1.0, 1.0);
+    glVertex3f(-1.0, -1.0, 1.0);
+    glVertex3f(-1.0, -1.0, -1.0);
+    glEnd();
+}
+
+void piramide() {
+    glBegin(GL_POLYGON);
+    glColor3f(0.0, 1.0, 1.0);
+    glVertex3f(0.0, 0.0, 1.0);
+    glVertex3f(-1.0, -1.0, -1.0);
+    glVertex3f(1.0, -1.0, -1.0);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3f(1.0, 0.0, 1.0);
+    glVertex3f(0.0, 0.0, 1.0);
+    glVertex3f(1.0, -1.0, -1.0);
+    glVertex3f(1.0, 1.0, -1.0);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3f(0.0, 1.0, 0.0);
+    glVertex3f(0.0, 0.0, 1.0);
+    glVertex3f(1.0, 1.0, -1.0);
+    glVertex3f(-1.0, 1.0, -1.0);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3f(0.0, 0.0, 1.0);
+    glVertex3f(0.0, 0.0, 1.0);
+    glVertex3f(-1.0, 1.0, -1.0);
+    glVertex3f(-1.0, -1.0, -1.0);
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3f(1.0, 0.0, 0.0);
+    glVertex3f(1.0, -1.0, -1.0);
+    glVertex3f(-1.0, -1.0, -1.0);
+    glVertex3f(-1.0, 1.0, -1.0);
+    glVertex3f(1.0, 1.0, -1.0);
+    glEnd();
+}
+
+void cilindro(){
+    float delta = 2.0*M_PI/25;
+    float angulo, x, y;
+
+    glBegin(GL_QUAD_STRIP);
+    glColor3f(1.0, 0.0, 0.0);
+    for (int i = 0; i <= 25; i++){
+        angulo = anguloInicial + i*delta;
+        x = cos(angulo);
+        y = sin(angulo);
+
+        glVertex3f(x, y, 1);
+        glVertex3f(x, y, -1);
+    }
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3f(0.0, 1.0, 0.0);
+    for (int i = 0; i <= 25; i++){
+        angulo = anguloInicial + i*delta;
+        x = cos(angulo);
+        y = sin(angulo);
+
+        glVertex3f(x, y, 1.0);
+    }
+    
+    glEnd();
+
+    glBegin(GL_POLYGON);
+    glColor3f(0.0, 0.0, 1.0);
+    for (int i = 25; i >= 0; i--){
+        angulo = anguloInicial + i*delta;
+        x = cos(angulo);
+        y = sin(angulo);
+
+        glVertex3f(x, y, -1.0);
+    }
+    
+    glEnd();
 }

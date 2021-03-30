@@ -15,7 +15,7 @@ void cubo();
 void piramide();
 void cilindro();
 
-Camera camera(5.f, 0.f, 90.f);
+Camera camera(3.f, 0.f, 90.f);
 
 int figure;
 float anguloInicial = M_PI/6.0;
@@ -27,7 +27,7 @@ int main(int argc, char **argv)
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_SINGLE | GLUT_RGBA);
     glutInitWindowPosition(100, 100);
-    glutInitWindowSize(640, 480);
+    glutInitWindowSize(640, 640);
     glutCreateWindow("Trabalho CG");
 
     init();
@@ -44,12 +44,30 @@ int main(int argc, char **argv)
 
 void init()
 {
-    glClearColor(0, 0, 0, 0);
+    glClearColor(0.55, 0.55, 0.55, 0);
 
     figure = 1;
 
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
+
+    glEnable(GL_LIGHTING);
+    glEnable(GL_LIGHT0);
+    glEnable(GL_COLOR_MATERIAL);
+
+    float globalAmb[] = {0.3, 0.3, 0.3, 1};
+    glLightModelfv(GL_LIGHT_MODEL_AMBIENT, globalAmb);
+
+    float light0[4][4] = {
+        {0.1, 0.1, 0.1, 1},
+        {0.8, 0.8, 0.8, 1},
+        {1, 1, 1, 1},
+        {5, 5, 5, 1}
+    };
+    glLightfv(GL_LIGHT0, GL_AMBIENT,  &light0[0][0]);
+    glLightfv(GL_LIGHT0, GL_DIFFUSE,  &light0[1][0]);
+    glLightfv(GL_LIGHT0, GL_SPECULAR, &light0[2][0]);
+    glLightfv(GL_LIGHT0, GL_POSITION, &light0[3][0]);
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -77,6 +95,10 @@ void desenha() {
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+
+    float matEspecular[] = {1, 1, 1, 1};
+    glMaterialfv(GL_FRONT, GL_SPECULAR, matEspecular);
+    glMaterialf(GL_FRONT, GL_SHININESS, 128);
 
     chooseFigure();
 
@@ -161,6 +183,7 @@ void reshape(int w, int h) {
 
 void cubo() {
     //face vermelha
+    glNormal3f(0,0,-1);
     glBegin(GL_POLYGON);
     glColor3f(1.0, 0.0, 0.0);
     glVertex3f(1.0, -1.0, -1.0);
@@ -170,6 +193,7 @@ void cubo() {
     glEnd();
 
     //face branca
+    glNormal3f(0,0,1);
     glBegin(GL_POLYGON);
     glColor3f(1.0, 1.0, 1.0);
     glVertex3f(1.0, -1.0, 1.0);
@@ -179,6 +203,7 @@ void cubo() {
     glEnd();
 
     //face magenta
+    glNormal3f(1,0,0);
     glBegin(GL_POLYGON);
     glColor3f(1.0, 0.0, 1.0);
     glVertex3f(1.0, -1.0, -1.0);
@@ -188,6 +213,7 @@ void cubo() {
     glEnd();
 
     //face verde
+    glNormal3f(-1,0,0);
     glBegin(GL_POLYGON);
     glColor3f(0.0, 1.0, 0.0);
     glVertex3f(-1.0, -1.0, 1.0);
@@ -197,6 +223,7 @@ void cubo() {
     glEnd();
 
     //face azul
+    glNormal3f(0,1,0);
     glBegin(GL_POLYGON);
     glColor3f(0.0, 0.0, 1.0);
     glVertex3f(1.0, 1.0, 1.0);
@@ -206,6 +233,7 @@ void cubo() {
     glEnd();
 
     //face ciano
+    glNormal3f(0,-1,0);
     glBegin(GL_POLYGON);
     glColor3f(0.0, 1.0, 1.0);
     glVertex3f(1.0, -1.0, -1.0);

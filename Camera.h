@@ -19,9 +19,9 @@ class Camera {
 	public:
 		Camera(float raio, float theta, float phi);
 		~Camera();
-		void Ativar();
-		void Forward();
-		void Back();
+		void ativar();
+		void forward();
+		void back();
 		void UpdateTheta(float delta);
 		void UpdatePhi(float delta);
 	private:

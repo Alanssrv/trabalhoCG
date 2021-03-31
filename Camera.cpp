@@ -10,14 +10,14 @@ Camera::Camera(float raio, float theta, float phi) {
 Camera::~Camera() {
 }
 
-void Camera::Ativar() {
+void Camera::ativar() {
 	gluLookAt(
 		m_position.getX(), m_position.getY(), m_position.getZ(),
 		m_look.getX(), m_look.getY(), m_look.getZ(),
 		0.0, 1.0, 0.0);
 }
 
-void Camera::Forward() {
+void Camera::forward() {
 	Ponto dir = m_look;
 	dir.normaliza();
 	Ponto veloc = dir * (0.25);
@@ -25,7 +25,7 @@ void Camera::Forward() {
 	m_raio = m_position.mag();
 }
 
-void Camera::Back() {
+void Camera::back() {
 	Ponto dir = m_look;
 	dir.normaliza();
 	Ponto veloc = dir * (-0.25);

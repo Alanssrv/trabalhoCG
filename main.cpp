@@ -2,6 +2,7 @@
 #include <GL/glut.h>
 #include <math.h>
 #include "Camera.h"
+#include "ObjLoader.h"
 
 void init();
 void desenha();
@@ -15,9 +16,10 @@ void cubo();
 void piramide();
 void cilindro();
 
-Camera camera(3.f, 0.f, 90.f);
+Camera camera(4.f, 0.f, 90.f);
 
 int figure;
+static unsigned blenderModelId;
 float anguloInicial = M_PI/6.0;
 float wWidth, wHeight;
 
@@ -32,18 +34,16 @@ int main(int argc, char **argv)
 
     init();
 
-    glutReshapeFunc(reshape);
     glutDisplayFunc(desenha);
-    glutKeyboardFunc(teclado);
     glutSpecialFunc(teclas_especiais);
+    glutKeyboardFunc(teclado);
     glutMotionFunc(mouse);
     glutMainLoop();
 
     return 0;
 }
 
-void init()
-{
+void init() {
     glClearColor(0.55, 0.55, 0.55, 0);
 
     figure = 1;
@@ -64,6 +64,7 @@ void init()
         {1, 1, 1, 1},
         {5, 5, 5, 1}
     };
+
     glLightfv(GL_LIGHT0, GL_AMBIENT,  &light0[0][0]);
     glLightfv(GL_LIGHT0, GL_DIFFUSE,  &light0[1][0]);
     glLightfv(GL_LIGHT0, GL_SPECULAR, &light0[2][0]);
@@ -75,23 +76,15 @@ void init()
 }
 
 void desenha() {
-    wWidth = glutGet(GLUT_WINDOW_WIDTH);
-    wHeight = glutGet(GLUT_WINDOW_HEIGHT);
-
-    glViewport(0, 0, wWidth, wHeight);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
+    float wWidth = glutGet(GLUT_WINDOW_WIDTH);
+    float wHeight = glutGet(GLUT_WINDOW_HEIGHT);
+    glViewport(0, 0, wWidth, wHeight);
 
-    float altura, largura;
+    reshape(wWidth, wHeight);
 
-    largura = 4;
-    altura = largura*wWidth/wHeight;
-
-    glFrustum(-largura / 2, largura / 2, -altura / 2, altura / 2, 1, 100);
-
-    camera.Ativar();
+    camera.ativar();
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
@@ -100,6 +93,7 @@ void desenha() {
     glMaterialfv(GL_FRONT, GL_SPECULAR, matEspecular);
     glMaterialf(GL_FRONT, GL_SHININESS, 128);
 
+    // ObjLoader::loadObj(blenderModelId, "objetos/2.obj");
     chooseFigure();
 
     glFlush();
@@ -109,31 +103,18 @@ void desenha() {
 void chooseFigure(){
     switch (figure){
         case 1:
-            cubo();
+            ObjLoader::loadObj(blenderModelId, "objetos/0.obj");
+            // cubo();
             break;
         case 2:
-            piramide();
+            ObjLoader::loadObj(blenderModelId, "objetos/1.obj");
+            // piramide();
             break;
         case 3:
-            cilindro();
+            ObjLoader::loadObj(blenderModelId, "objetos/2.obj");
+            // cilindro();
             break;
     }
-}
-
-void teclas_especiais( int key, int x, int y ) {
-
-    if (key == GLUT_KEY_RIGHT){
-
-    } else if (key == GLUT_KEY_LEFT){
-
-    } else if (key == GLUT_KEY_UP) {
-
-    } else if (key == GLUT_KEY_DOWN){
-
-    }
-  
-    glutPostRedisplay();
-
 }
 
 void teclado(unsigned char key, int x, int y){
@@ -148,13 +129,16 @@ void teclado(unsigned char key, int x, int y){
             figure = 3;
             break;
         case 'w':case 'W':
-            camera.Forward();
+            camera.forward();
             break;
         case 's':case 'S':
-            camera.Back();
+            camera.back();
             break;
     }
     glutPostRedisplay();
+}
+
+void teclas_especiais(int key, int x, int y) {
 }
 
 void mouse(int xpos, int ypos){
@@ -177,8 +161,10 @@ void mouse(int xpos, int ypos){
 }
 
 void reshape(int w, int h) {
-    wHeight = w;
-    wHeight = h;   
+    float aspect = (float)w/(float)h;
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    gluPerspective(90, aspect, 0.1, 500);
 }
 
 void cubo() {

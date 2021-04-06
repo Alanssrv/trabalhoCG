@@ -33,12 +33,12 @@ void Camera::back() {
 	m_raio = m_position.mag();
 }
 
-void Camera::UpdateTheta(float delta) {
+void Camera::updateTheta(float delta) {
 	m_theta -= delta;
 	update();
 }
 
-void Camera::UpdatePhi(float delta) {
+void Camera::updatePhi(float delta) {
 	m_phi -= delta;
 	if (m_phi < 1.f) m_phi = 1.f;
 	if (m_phi > 150.f) m_phi = 150.f;

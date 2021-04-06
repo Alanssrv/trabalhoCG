@@ -22,8 +22,8 @@ class Camera {
 		void ativar();
 		void forward();
 		void back();
-		void UpdateTheta(float delta);
-		void UpdatePhi(float delta);
+		void updateTheta(float delta);
+		void updatePhi(float delta);
 	private:
 		Ponto cvt2Cartesiano();
 		inline float Sen(float ang) { return sin(ang*PI / 180.f); }

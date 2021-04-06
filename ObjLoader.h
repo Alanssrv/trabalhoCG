@@ -25,7 +25,6 @@ struct face {
         normal[0] = n1; normal[1] = n2;
         normal[2] = n3; normal[3] = n4;
         poligono = tipo;
-        
     }
 };
 

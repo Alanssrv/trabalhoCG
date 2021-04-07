@@ -17,7 +17,7 @@
 
 ### Dependências e Execução
 - Windows:  
-[Instalação das APIs.](https://w3.cs.jmu.edu/bernstdh/web/common/help/cpp_mingw-glut-setup.php){:target="_blank"}  
+[Instalação das APIs.](https://w3.cs.jmu.edu/bernstdh/web/common/help/cpp_mingw-glut-setup.php){target="_blank"}  
 Comando para compilar o projeto: g++ *.cpp -mwindows glut32.lib -lopengl32 -lglu32  
 Execução: a.exe
 - Linux:  

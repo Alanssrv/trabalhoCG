@@ -59,9 +59,6 @@ void ObjLoader::loadObj(unsigned& id, const char* file) {
         }
     }
 
-    // id = glGenLists(1);
-
-    // glNewList(id, GL_COMPILE);
     glPolygonMode(GL_FRONT, GL_FILL);
     glColor3f(0.04f, 0.6f, 0.0f);
     for (int i = 0; i < faces.size(); i++) {
@@ -87,6 +84,4 @@ void ObjLoader::loadObj(unsigned& id, const char* file) {
             glEnd();
         }
     }
-    
-
 }

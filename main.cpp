@@ -1,4 +1,4 @@
-#include <windows.h> //Biblioteca usada no Windows para uso da glut
+#include <windows.h>
 #include <GL/glut.h>
 #include <math.h>
 #include "Camera.h"
@@ -12,9 +12,6 @@ void mouse(int x, int y);
 void reshape(int w, int h);
 
 void chooseFigure();
-void cubo();
-void piramide();
-void cilindro();
 
 Camera camera(4.f, 0.f, 90.f);
 
@@ -22,8 +19,7 @@ static int figure;
 static unsigned blenderModelId;
 float wWidth, wHeight;
 
-int main(int argc, char **argv)
-{
+int main(int argc, char **argv) {
 
     glutInit(&argc, argv);
     glutInitDisplayMode(GLUT_DEPTH | GLUT_SINGLE | GLUT_RGBA);
@@ -52,6 +48,7 @@ void init() {
 
     glEnable(GL_LIGHTING);
     glEnable(GL_LIGHT0);
+    glEnable(GL_LIGHT1);
     glEnable(GL_COLOR_MATERIAL);
 
     float globalAmb[] = {0.3, 0.3, 0.3, 1};
@@ -61,13 +58,25 @@ void init() {
         {0.1, 0.1, 0.1, 1},
         {0.8, 0.8, 0.8, 1},
         {1, 1, 1, 1},
-        {5, 5, 5, 1}
+        {5, 5, 0, 1}
+    };
+
+    float light1[4][4] = {
+        {0.1, 0.1, 0.1, 1},
+        {0.8, 0.8, 0.8, 1},
+        {1, 1, 1, 1},
+        {-5, -5, 0, 1}
     };
 
     glLightfv(GL_LIGHT0, GL_AMBIENT,  &light0[0][0]);
     glLightfv(GL_LIGHT0, GL_DIFFUSE,  &light0[1][0]);
     glLightfv(GL_LIGHT0, GL_SPECULAR, &light0[2][0]);
     glLightfv(GL_LIGHT0, GL_POSITION, &light0[3][0]);
+
+    glLightfv(GL_LIGHT1, GL_AMBIENT,  &light1[0][0]);
+    glLightfv(GL_LIGHT1, GL_DIFFUSE,  &light1[1][0]);
+    glLightfv(GL_LIGHT1, GL_SPECULAR, &light1[2][0]);
+    glLightfv(GL_LIGHT1, GL_POSITION, &light1[3][0]);
 
     glEnable(GL_BLEND);
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -101,15 +110,12 @@ void desenha() {
 void chooseFigure(){
     switch (figure){
         case 1:
-            ObjLoader::loadObj(blenderModelId, "objetos/0.obj");
-            break;
-        case 2:
             ObjLoader::loadObj(blenderModelId, "objetos/1.obj");
             break;
-        case 3:
+        case 2:
             ObjLoader::loadObj(blenderModelId, "objetos/2.obj");
             break;
-        case 4:
+        case 3:
             ObjLoader::loadObj(blenderModelId, "objetos/3.obj");
             break;
     }
@@ -125,9 +131,6 @@ void teclado(unsigned char key, int x, int y){
             break;
         case '3':
             figure = 3;
-            break;
-        case '4':
-            figure = 4;
             break;
         case 'w':case 'W':
             camera.forward();

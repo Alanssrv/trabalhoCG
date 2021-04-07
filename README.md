@@ -7,7 +7,7 @@
 
 ### Descrição do Projeto
 - Projeto que visa execução de conteúdos mostrados em aula, como: Iluminação, câmera, movimentação, colisão, leitura de arquivos entre outros.
-- A ideia implementada foi mostrar a mudança um personagem de acordo com suas versões. No caso o personagem escolhido foi o [Hulk](https://www.google.com/search?q=hulk).
+- A ideia implementada foi mostrar a mudança um personagem de acordo com suas versões. No caso o personagem escolhido foi o [Hulk](https://www.google.com/search?q=hulk){target="_blank"}.
 - Na prática o usuário tem um câmera que visualiza o personagem e o mesmo pode selecionar entre suas versões.
 
 ### Dados de Implementação
@@ -17,13 +17,13 @@
 
 ### Dependências e Execução
 - Windows:  
-[Instalação das APIs.](https://w3.cs.jmu.edu/bernstdh/web/common/help/cpp_mingw-glut-setup.php){target="_blank"}  
+[Instalação das APIs](https://w3.cs.jmu.edu/bernstdh/web/common/help/cpp_mingw-glut-setup.php){target="_blank"}  
 Comando para compilar o projeto: g++ *.cpp -mwindows glut32.lib -lopengl32 -lglu32  
 Execução: a.exe
 - Linux:  
-[Instalação das APIs.](https://gist.github.com/AbdullahKady/f2782157991df652c2baee0bba05b788){:target="_blank"}  
+[Instalação das APIs](https://gist.github.com/AbdullahKady/f2782157991df652c2baee0bba05b788){:target="_blank"}  
 Comando para compilar o projeto: g++ *.cpp -lglut -lGLU -lGL -lm  
 Execução: ./a
 
 ### Modelos
-[Rip Van Winkle in RenderHub](https://www.renderhub.com/rip-van-winkle)
+[Rip Van Winkle in RenderHub](https://www.renderhub.com/rip-van-winkle){target="_blank"}
